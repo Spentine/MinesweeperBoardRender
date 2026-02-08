@@ -11,6 +11,11 @@ function main() {
       [" ", "F", "M"],
     ]),
     tileSize: 48,
+    highlight: MinesweeperRenderer.padBorders([
+      [null, null, null],
+      [null, "#00ff0040", null],
+      [null, null, null],
+    ]),
   };
   
   const stateHTML = renderer.html(state);

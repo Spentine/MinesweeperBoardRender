@@ -65,29 +65,47 @@ class MinesweeperRenderer {
         const tileState = state.board[y][x];
         const type = MinesweeperRenderer.shortNames[tileState];
         
-        const tile = document.createElement("img");
+        const tile = document.createElement("div");
         tile.classList.add("tile");
-        tile.src = MinesweeperRenderer.imageLinks[type];
+        
+        // render image
+        const image = document.createElement("img");
+        image.src = MinesweeperRenderer.imageLinks[type];
+        image.style.display = "block";
+        tile.appendChild(image);
         
         if ([
           "topLeftCorner", "topRightCorner", "bottomLeftCorner", "bottomRightCorner"
         ].includes(type)) {
-          tile.style.imageRendering = "pixelated";
-          tile.style.width = `${24 * scale}px`;
-          tile.style.height = `${22 * scale}px`;
+          image.style.imageRendering = "pixelated";
+          image.style.width = `${24 * scale}px`;
+          image.style.height = `${22 * scale}px`;
         } else {
-          tile.style.width = `${94 * scale}px`;
-          tile.style.height = `${94 * scale}px`;
+          image.style.width = `${94 * scale}px`;
+          image.style.height = `${94 * scale}px`;
         }
         
         if (type === "borderHorizontal") {
-          tile.style.width = `${94 * scale}px`;
-          tile.style.height = `${22 * scale}px`;
-          tile.style.imageRendering = "pixelated";
+          image.style.width = `${94 * scale}px`;
+          image.style.height = `${22 * scale}px`;
+          image.style.imageRendering = "pixelated";
         } else if (type === "borderVertical") {
-          tile.style.width = `${24 * scale}px`;
-          tile.style.height = `${94 * scale}px`;
-          tile.style.imageRendering = "pixelated";
+          image.style.width = `${24 * scale}px`;
+          image.style.height = `${94 * scale}px`;
+          image.style.imageRendering = "pixelated";
+        }
+        
+        // render highlight
+        const highLightState = state.highlight?.[y]?.[x];
+        if (highLightState) {
+          const highlight = document.createElement("div");
+          highlight.classList.add("highlight");
+          highlight.style.position = "absolute";
+          highlight.style.width = image.style.width;
+          highlight.style.height = image.style.height;
+          highlight.style.transform = `translateY(-100%)`;
+          highlight.style.backgroundColor = highLightState;
+          tile.appendChild(highlight);
         }
         
         row.appendChild(tile);
@@ -107,6 +125,20 @@ class MinesweeperRenderer {
     return [
       top,
       ...board.map(row => ["BL", ...row, "BR"]),
+      bottom,
+    ];
+  }
+  
+  static padBorders(board) {
+    const height = board.length;
+    const width = board[0].length;
+    
+    const top = [null, ...Array(width).fill(null), null];
+    const bottom = [null, ...Array(width).fill(null), null];
+    
+    return [
+      top,
+      ...board.map(row => [null, ...row, null]),
       bottom,
     ];
   }
