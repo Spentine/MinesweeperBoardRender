@@ -1,14 +1,13 @@
-import { MinesweeperRenderer } from "./src/boardRender.js";
+import { MinesweeperRenderer } from "../src/boardRender.js";
+import { Minesweeper } from "../src/easyTag.js";
 
 function main() {
-  const renderer = new MinesweeperRenderer();
-  
   const state = {
     board: MinesweeperRenderer.addBorders([
       ["1", "2", "3"],
       ["4", "5", "6"],
       ["7", "8", "0"],
-      [" ", "F", "M"],
+      ["C", "F", "M"],
     ]),
     tileSize: 48,
     highlight: MinesweeperRenderer.padBorders([
@@ -18,7 +17,7 @@ function main() {
     ]),
   };
   
-  const stateHTML = renderer.html(state);
+  const stateHTML = MinesweeperRenderer.html(state);
   document.body.appendChild(stateHTML);
 }
 

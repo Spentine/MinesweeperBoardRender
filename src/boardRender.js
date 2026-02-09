@@ -1,6 +1,4 @@
 class MinesweeperRenderer {
-  constructor() {}
-  
   /*
   static imageLinks = {
     closed: "images/closed.svg",
@@ -47,7 +45,9 @@ class MinesweeperRenderer {
   
   
   static shortNames = {
+    "C": "closed",
     " ": "closed",
+    "-": "closed",
     "0": "type0",
     "1": "type1",
     "2": "type2",
@@ -69,7 +69,17 @@ class MinesweeperRenderer {
     "BL": "borderVertical",
   };
   
-  html(state) {
+  static html(inputState) {
+    const state = {};
+    state.board = inputState.board ?? [];
+    state.tileSize = inputState.tileSize ?? 48;
+    state.highlight = inputState.highlight ?? (
+      new Array(state.board.length)
+        .fill(new Array(state.board[0]?.length ?? 0)
+          .fill(null)
+        )
+    );
+    
     const height = state.board.length;
     const width = state.board[0].length;
     const scale = state.tileSize / 94;

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" type="module"></script>
+  </head>
+  <body>
+    <minesweeper-board>
+      1 2 3
+      4 5 6
+      7 8 0
+      - F M
+    </minesweeper-board>
+    <minesweeper-board type="json">
+      {
+        "board": [
+          ["1", "2", "3"],
+          ["4", "5", "6"],
+          ["7", "8", "0"],
+          [" ", "F", "M"]
+        ],
+        
+        "highlight": [
+          [null, null, null],
+          [null, "#00ff0040", null],
+          [null, null, null],
+          [null, null, null]
+        ]
+      }
+    </minesweeper-board>
+  </body>
+</html>
