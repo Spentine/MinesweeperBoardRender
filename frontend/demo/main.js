@@ -1,5 +1,5 @@
-import { MinesweeperRenderer } from "../src/boardRender.js";
-import { Minesweeper } from "../src/easyTag.js";
+import { MinesweeperRenderer } from "../../src/boardRender.js";
+import { Minesweeper } from "../../src/easyTag.js";
 
 function main() {
   const state = {

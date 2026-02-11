@@ -1,0 +1,21 @@
+body {
+  background-color: #222;
+  color: #fff;
+  font-family: "Work Sans", sans-serif;
+}
+
+input, select, button {
+  background-color: #333;
+  color: inherit;
+  border: 1px solid #555;
+  padding: 4px;
+  margin: 4px;
+  
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.selected {
+  z-index: 1;
+  outline: solid;
+}

@@ -69,7 +69,7 @@ class MinesweeperRenderer {
     "BL": "borderVertical",
   };
   
-  static html(inputState) {
+  static html(inputState, tileCall) {
     const state = {};
     state.board = inputState.board ?? [];
     state.tileSize = inputState.tileSize ?? 48;
@@ -99,12 +99,22 @@ class MinesweeperRenderer {
         const tileState = state.board[y][x];
         const type = MinesweeperRenderer.shortNames[tileState];
         
+        const noDrag = `
+          user-drag: none;
+          -webkit-user-drag: none;
+          user-select: none;
+          -moz-user-select: none;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+        `;
+        
         const tile = document.createElement("div");
         tile.classList.add("tile");
         
         // render image
         const image = document.createElement("img");
         image.src = MinesweeperRenderer.imageLinks[type];
+        image.style = noDrag;
         image.style.display = "block";
         tile.appendChild(image);
         
@@ -140,6 +150,10 @@ class MinesweeperRenderer {
           highlight.style.transform = `translateY(-100%)`;
           highlight.style.backgroundColor = highLightState;
           tile.appendChild(highlight);
+        }
+        
+        if (tileCall) {
+          tileCall(tile, x, y);
         }
         
         row.appendChild(tile);
