@@ -6,18 +6,31 @@
     <script src="main.js" type="module"></script>
   </head>
   <body>
-    <div id="board"></div>
+    <button id="clear">Clear</button>
+    <button id="export">Export</button>
+    <button id="import">Import</button>
     
-    <input id="width" type="number" value="10" />
+    <br>
+    
+    <input id="width" type="number" value="5" />
     <label for="width">Width</label>
     <br>
-    <input id="height" type="number" value="10" />
+    <input id="height" type="number" value="5" />
     <label for="height">Height</label>
     
     <br>
     
-    <input id="borders" type="checkbox" />
+    <div id="board"></div>
+    
+    <br>
+    
+    <input id="borders" type="checkbox" checked />
     <label for="borders">Borders</label>
+    
+    <br>
+    
+    <input id="tileSize" type="number" value="48" />
+    <label for="tileSize">Tile Size</label>
     
     <br>
     
