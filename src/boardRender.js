@@ -1,3 +1,12 @@
+const noDrag = `
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+`;
+
 class MinesweeperRenderer {
   /*
   static imageLinks = {
@@ -69,25 +78,9 @@ class MinesweeperRenderer {
     "BL": "borderVertical",
   };
   
-  static htmlTile(type, highlightState, scale) {
-    const noDrag = `
-      user-drag: none;
-      -webkit-user-drag: none;
-      user-select: none;
-      -moz-user-select: none;
-      -webkit-user-select: none;
-      -ms-user-select: none;
-    `;
-    
-    const tile = document.createElement("div");
-    tile.classList.add("tile");
-    
-    // render image
-    const image = document.createElement("img");
-    image.src = MinesweeperRenderer.imageLinks[type];
-    image.style = noDrag;
-    image.style.display = "block";
-    tile.appendChild(image);
+  static borderTile(type, scale) {
+    const tile = MinesweeperRenderer.htmlTile(type, null, scale);
+    const image = tile.querySelector("img");
     
     if ([
       "topLeftCorner", "topRightCorner", "bottomLeftCorner", "bottomRightCorner"
@@ -96,9 +89,6 @@ class MinesweeperRenderer {
       image.style.imageRendering = "pixelated";
       image.style.width = `${24 * scale}px`;
       image.style.height = `${22 * scale}px`;
-    } else {
-      image.style.width = `${94 * scale}px`;
-      image.style.height = `${94 * scale}px`;
     }
     
     if (type === "borderHorizontal") {
@@ -112,6 +102,23 @@ class MinesweeperRenderer {
       image.style.height = `${94 * scale}px`;
       image.style.imageRendering = "pixelated";
     }
+    
+    return tile;
+  }
+  
+  static htmlTile(type, highlightState, scale) {
+    const tile = document.createElement("div");
+    tile.classList.add("tile");
+    
+    // render image
+    const image = document.createElement("img");
+    image.src = MinesweeperRenderer.imageLinks[type];
+    image.style = noDrag;
+    image.style.display = "block";
+    tile.appendChild(image);
+    
+    image.style.width = `${94 * scale}px`;
+    image.style.height = `${94 * scale}px`;
     
     // render highlight
     if (highlightState) {
@@ -138,6 +145,7 @@ class MinesweeperRenderer {
           .fill(null)
         )
     );
+    state.borders = inputState.borders ?? true;
     
     const height = state.board.length;
     const width = state.board[0].length;
@@ -166,6 +174,37 @@ class MinesweeperRenderer {
         }
         
         row.appendChild(tile);
+      }
+    }
+    
+    if (state.borders) {
+      // new beginning row
+      const top = document.createElement("div");
+      top.style.display = "flex";
+      top.style.width = "fit-content";
+      rows.insertBefore(top, rows.firstChild);
+      
+      // new ending row
+      const bottom = document.createElement("div");
+      bottom.style.display = "flex";
+      bottom.style.width = "fit-content";
+      rows.appendChild(bottom);
+      
+      // populate top and bottom rows
+      top.appendChild(MinesweeperRenderer.borderTile("topLeftCorner", scale));
+      bottom.appendChild(MinesweeperRenderer.borderTile("bottomLeftCorner", scale));
+      for (let x = 0; x < width; x++) {
+        top.appendChild(MinesweeperRenderer.borderTile("borderHorizontal", scale));
+        bottom.appendChild(MinesweeperRenderer.borderTile("borderHorizontal", scale));
+      }
+      top.appendChild(MinesweeperRenderer.borderTile("topRightCorner", scale));
+      bottom.appendChild(MinesweeperRenderer.borderTile("bottomRightCorner", scale));
+      
+      // populate left and right borders of existing rows
+      for (let y = 0; y < height; y++) {
+        const row = rows.children[y + 1];
+        row.insertBefore(MinesweeperRenderer.borderTile("borderVertical", scale), row.firstChild);
+        row.appendChild(MinesweeperRenderer.borderTile("borderVertical", scale));
       }
     }
     

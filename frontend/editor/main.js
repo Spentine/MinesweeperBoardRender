@@ -20,30 +20,24 @@ function main() {
       [null, "#00ff0040", null],
       [null, null, null],
     ],
-  };
-  
-  function addBorders(state) {
-    return {
-      board: MinesweeperRenderer.addBorders(state.board),
-      highlight: MinesweeperRenderer.padBorders(state.highlight),
-      tileSize: state.tileSize,
-    };
+    borders: true,
   };
   
   const selectionState = {
-    board: MinesweeperRenderer.addBorders([
+    board: [
       ["1", "2", "3", "C", "C"],
       ["4", "5", "6", "C", "C"],
       ["7", "8", "0", "C", "C"],
       ["C", "F", "M", "C", "C"],
-    ]),
+    ],
     tileSize: 48,
-    highlight: MinesweeperRenderer.padBorders([
+    highlight: [
       [null, null, null, "#ff000040", "#0000ff40"],
       [null, null, null, "#ffff0040", "#ff00ff40"],
       [null, null, null, "#00ff0040", "#ffffff40"],
       [null, null, null, "#00ffff40", null],
-    ]),
+    ],
+    borders: true,
   };
   
   const currentlySelected = {
@@ -86,9 +80,12 @@ function main() {
   const selectionCallback = (tile, x, y) => {
     tile.addEventListener("click", () => {
       // check bounds
-      if (x < 1 || x > 5 || y < 1 || y > 4) return;
+      if (
+        x < 0 || x > selectionState.board[0].length - 1 ||
+        y < 0 || y > selectionState.board.length - 1
+      ) return;
       
-      const { type, selection } = selectionMap[y - 1][x - 1];
+      const { type, selection } = selectionMap[y][x];
       
       if (currentlySelected.tile === tile) {
         tile.classList.remove("selected");
@@ -120,18 +117,11 @@ function main() {
   });
   
   const boardCallback = (tile, x, y) => {
-    // offset for borders
-    if (borderCheckbox.checked) {
-      x -= 1;
-      y -= 1;
-    }
-    
     const replace = () => {
       if (!mouseDown) return;
       
       // check bounds
       if (x < 0 || x > state.board[0].length - 1 || y < 0 || y > state.board.length - 1) return;
-      if (tile.classList.contains("border")) return;
       
       const type = currentlySelected.type
         ? currentlySelected.type
@@ -151,12 +141,6 @@ function main() {
       );
       
       tile.replaceWith(newTile);
-      
-      // un-offset
-      if (borderCheckbox.checked) {
-        x += 1;
-        y += 1;
-      }
       
       boardCallback(newTile, x, y);
     };
@@ -179,7 +163,7 @@ function main() {
     document.getElementById("board").innerHTML = "";
     
     const newStateHTML = MinesweeperRenderer.html(
-      borderCheckbox.checked ? addBorders(state) : state,
+      state,
       boardCallback
     );
     document.getElementById("board").appendChild(newStateHTML);
@@ -199,7 +183,11 @@ function main() {
   
   clear();
   
-  borderCheckbox.addEventListener("change", render);
+  borderCheckbox.addEventListener("change", () => {
+    state.borders = borderCheckbox.checked;
+    render();
+  });
+  
   widthInput.addEventListener("change", () => {
     const newWidth = Number(widthInput.value);
     

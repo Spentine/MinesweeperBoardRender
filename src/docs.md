@@ -5,6 +5,7 @@ data = {
   board: [] // string[][]
   tileSize: 48 // number
   highlight: [] // {string | null}[][] 
+  borders: true // boolean
 }
 ```
 

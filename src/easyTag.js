@@ -31,7 +31,7 @@ class Minesweeper extends HTMLElement {
     this.innerHTML = "";
     
     if (this.border) {
-      state.board = MinesweeperRenderer.addBorders(state.board);
+      state.board = state.board;
     }
     
     const html = MinesweeperRenderer.html(state);
@@ -43,8 +43,8 @@ class Minesweeper extends HTMLElement {
     this.innerHTML = "";
     
     if (this.border) {
-      state.board = MinesweeperRenderer.addBorders(state.board);
-      state.highlight = MinesweeperRenderer.padBorders(state.highlight);
+      state.board = state.board;
+      state.highlight = state.highlight;
     }
     
     const html = MinesweeperRenderer.html(state);
