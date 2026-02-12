@@ -6,6 +6,29 @@ A simple program that renders Minesweeper board states more beautifully for site
 
 It uses images from **Minesweeper Online**. I chose it because the images for the tiles are SVGs, which allows for good scaling quality for the board renders.
 
+## Demo
+
+Go to the following link to view a rudimentary board editor.
+
+https://spentine.github.io/MinesweeperBoardRender/frontend/editor/
+
+## Importing
+
+The files can be imported as ESM modules with the code:
+
+### Minesweeper Renderer
+
+```js
+// main rendering system
+import { MinesweeperRenderer } from "https://cdn.jsdelivr.net/gh/spentine/minesweeperboardrender/src/boardRender.js";
+```
+
+### Minesweeper Tag
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/spentine/minesweeperboardrender/src/easyTag.js" type="module"></script>
+```
+
 ## API
 
 ### Class `MinesweeperRenderer`
@@ -34,7 +57,7 @@ Simple mode renders the board from a human readable source.
 
 JSON mode renders the board from a JSON as specified by `MinesweeperRenderer`.
 
-```html
+```jsx
 <minesweeper-board type="json">
   {
     "board": [
