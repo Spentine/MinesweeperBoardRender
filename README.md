@@ -57,7 +57,7 @@ Simple mode renders the board from a human readable source.
 
 JSON mode renders the board from a JSON as specified by `MinesweeperRenderer`.
 
-```jsx
+```html
 <minesweeper-board type="json">
   {
     "board": [
