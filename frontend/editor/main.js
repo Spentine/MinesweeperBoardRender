@@ -77,15 +77,18 @@ function main() {
     ],
   ];
   
+  const tileSelectionFunctions = new Array(selectionState.board.length).fill(null)
+    .map(() => new Array(selectionState.board[0].length).fill(null));
+  
   const selectionCallback = (tile, x, y) => {
-    tile.addEventListener("click", () => {
+    const { type, selection } = selectionMap[y][x];
+    
+    const f = () => {
       // check bounds
       if (
         x < 0 || x > selectionState.board[0].length - 1 ||
         y < 0 || y > selectionState.board.length - 1
       ) return;
-      
-      const { type, selection } = selectionMap[y][x];
       
       if (currentlySelected.tile === tile) {
         tile.classList.remove("selected");
@@ -103,8 +106,47 @@ function main() {
       currentlySelected.tile = tile;
       currentlySelected.type = type;
       currentlySelected.selection = selection;
-    });
+    };
+    
+    tileSelectionFunctions[y][x] = f;
+    
+    tile.addEventListener("click", f);
   }
+  
+  const keyboardSelectionMap = {
+    "1": [0, 0],
+    "2": [0, 1],
+    "3": [0, 2],
+    "q": [1, 0],
+    "w": [1, 1],
+    "e": [1, 2],
+    "a": [2, 0],
+    "s": [2, 1],
+    "d": [2, 2],
+    "z": [3, 0],
+    "x": [3, 1],
+    "c": [3, 2],
+    
+    "4": [0, 3],
+    "5": [0, 4],
+    "r": [1, 3],
+    "t": [1, 4],
+    "f": [2, 3],
+    "g": [2, 4],
+    "v": [3, 3],
+    "b": [3, 4],
+    
+    " ": [3, 0],
+  };
+  
+  window.addEventListener("keydown", (event) => {
+    const key = event.key.toLowerCase();
+    if (key in keyboardSelectionMap) {
+      const [y, x] = keyboardSelectionMap[key];
+      const f = tileSelectionFunctions[y][x];
+      if (f) f();
+    }
+  });
   
   let mouseDown = false;
   
